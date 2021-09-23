@@ -1,6 +1,17 @@
 import { useState } from "react";
 
-export default function Word({word : w}) {
+interface IProp {
+    word : IWord;
+}
+export interface IWord {
+    "day": number,
+    "eng": string,
+    "kor": string,
+    "isDone": boolean,
+    "id": number
+}
+
+export default function Word({word : w} : IProp) {
     const [word, setWord] = useState(w);
     const [isDispMean, setDispMean] = useState(false);
     const [isDone, setDone] = useState(word.isDone);
@@ -29,13 +40,13 @@ export default function Word({word : w}) {
     function del() {
         if ( window.confirm("削除していいですか？") ) {
             fetch(`http://localhost:3001/words/${word.id}`,{
-            method : "DELETE"
-        }).then(res=>{
-            if (res.ok) {
-                alert("削除しました");
-                setWord({id : -1});
-            }
-        }).catch(e=>console.log(e));
+                method : "DELETE"
+            }).then(res=>{
+                if (res.ok) {
+                    alert("削除しました");
+                    setWord({...word, id : -1});
+                }
+            }).catch(e=>console.log(e));
         }
     }
 

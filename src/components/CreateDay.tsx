@@ -1,14 +1,14 @@
 import useFetch from "../hooks/useFetch"
 import { useHistory} from "react-router-dom";
+import { IDay } from "./Day";
 
 export default function CreateDay() {
     const history = useHistory();
-    const days = useFetch("http://localhost:3001/days");
-    const maxDay = days.length;
+    const days : IDay[] = useFetch("http://localhost:3001/days");
+    const maxDay : number = days.length;
 
-    function addDay(event) {
-        const insertDay = maxDay + 1;
-        event.preventDefault();
+    function addDay() : void {
+        const insertDay : number = maxDay + 1;
         fetch(`http://localhost:3001/days/`,{
             method : "POST",
             headers : {
@@ -19,12 +19,12 @@ export default function CreateDay() {
                     day : insertDay,
                 }
             )
-        }).then(res=>{
+        }).then((res : Response) =>{
             if (res.ok) {
                 alert("登録しました");
                 history.push(`/day/${insertDay}`)
             }
-        }).catch(e=>console.log(e));
+        }).catch((e: Error)=>console.log(e));
     }
     
     return (

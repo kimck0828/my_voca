@@ -52,20 +52,20 @@
       "day": 3,
       "eng": "school",
       "kor": "학교",
-      "isDone": true
+      "isDone": false
     },
     {
       "id": 6,
       "day": 3,
       "eng": "pencil",
       "kor": "연필",
-      "isDone": false
+      "isDone": true
     },
     {
       "day": 3,
       "eng": "house",
       "kor": "집",
-      "isDone": false,
+      "isDone": true,
       "id": 8
     },
     {

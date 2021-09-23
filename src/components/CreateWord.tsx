@@ -1,20 +1,27 @@
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useHistory} from "react-router-dom";
 import useFetch from "../hooks/useFetch";
+import { IDay } from "./Day";
 
 export default function CreateWord() {
-    const days = useFetch("http://localhost:3001/days");
+    const days : IDay[] = useFetch("http://localhost:3001/days");
     const history = useHistory();
     const [isLoading, setIsLoading] = useState(false);
 
-    const engRef = useRef(null);
-    const korRef = useRef(null);
-    const dayRef = useRef(null);
+    const engRef = useRef<HTMLInputElement>(null);
+    const korRef = useRef<HTMLInputElement>(null);
+    const dayRef = useRef<HTMLSelectElement>(null);
 
     console.log(`isLoading:${isLoading}`);
-    function onSubmit(event) {
+    function onSubmit(event : React.FormEvent) {
         event.preventDefault();
-        if ( !isLoading ) {
+
+        if ( !isLoading && engRef.current && korRef.current && dayRef.current) {
+            
+            const eng = engRef.current.value;
+            const kor = korRef.current.value;
+            const day = Number(dayRef.current.value);
+
             setIsLoading(!isLoading);
             console.log("isLoading toggled");
             fetch(`http://localhost:3001/words/`,{
@@ -24,9 +31,9 @@ export default function CreateWord() {
                 },
                 body : JSON.stringify(
                     {
-                        day : Number(dayRef.current.value),
-                        eng : engRef.current.value,
-                        kor : korRef.current.value,
+                        day, 
+                        eng,
+                        kor,
                         isDone : false
                     }
                 )
@@ -34,7 +41,7 @@ export default function CreateWord() {
                 if (res.ok) {
                     console.log("fetch finished")
                     alert("登録しました");
-                    history.push(`/day/${dayRef.current.value}`)
+                    history.push(`/day/${day}`)
                 }
             }).catch(e=>console.log(e));
 
